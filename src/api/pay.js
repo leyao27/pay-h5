@@ -1,9 +1,9 @@
 import request from './request'
 
-export function getMerchantInfo(merchantId) {
-  return request.get('/merchant/info', { params: { merchantId } })
+export function getMerchantInfo(merchantCode) {
+  return request.get('/merchant/info', { params: { merchantCode } })
 }
 
 export function unifiedOrder(data) {
-  return request.post('/pay/unified', data)
+  return request.post('/blade-client-controller/catering/order/jsapi-officialAccount', data)
 }

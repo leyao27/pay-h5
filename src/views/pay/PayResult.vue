@@ -7,10 +7,10 @@ const route = useRoute()
 const router = useRouter()
 
 const status = computed(() => route.query.status)
-const merchantId = computed(() => route.query.merchantId || '')
+const merchantCode = computed(() => route.query.merchantCode || '')
 
 function goBack() {
-  router.replace({ path: '/', query: { merchantId: merchantId.value } })
+  router.replace({ path: '/', query: { merchantCode: merchantCode.value } })
 }
 
 function closeWindow() {

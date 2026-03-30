@@ -13,7 +13,7 @@ const route = useRoute()
 const router = useRouter()
 
 const channel = ref('')
-const merchantId = ref('')
+const merchantCode = ref('')
 const merchantName = ref('')
 const merchantLogo = ref('')
 const amountInput = ref('')
@@ -36,10 +36,10 @@ onMounted(async () => {
   channel.value = getPayChannel()
   if (channel.value === 'other') return
 
-  merchantId.value = route.query.merchantId || ''
+  merchantCode.value = route.query.merchantCode || ''
 
   try {
-    const info = await getMerchantInfo(merchantId.value)
+    const info = await getMerchantInfo(merchantCode.value)
     merchantName.value = info.name || ''
     merchantLogo.value = info.logo || ''
   } catch {
@@ -90,8 +90,9 @@ async function handlePay() {
   try {
     res = await unifiedOrder({
       channel: channel.value,
-      merchantId: merchantId.value,
+      merchantCode: merchantCode.value,
       amount: amountFen,
+      description: '扫码支付商品',
       code
     })
     sessionStorage.removeItem('pay_code')
@@ -107,9 +108,9 @@ async function handlePay() {
     } else if (channel.value === 'alipay') {
       await invokeAlipay(res.tradeNO)
     }
-    router.replace({ path: '/pay/result', query: { status: 'success', merchantId: merchantId.value } })
+    router.replace({ path: '/pay/result', query: { status: 'success', merchantCode: merchantCode.value } })
   } catch {
-    router.replace({ path: '/pay/result', query: { status: 'fail', merchantId: merchantId.value } })
+    router.replace({ path: '/pay/result', query: { status: 'fail', merchantCode: merchantCode.value } })
   } finally {
     paying.value = false
   }
